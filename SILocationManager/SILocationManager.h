@@ -18,7 +18,7 @@
 
 @end
 
-@interface UserLocationManager : NSObject <CLLocationManagerDelegate>
+@interface SILocationManager : NSObject <CLLocationManagerDelegate>
 
 /**
  Adds object to list of location receivers

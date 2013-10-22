@@ -5,21 +5,21 @@
 //  Copyright (c) 2012 Cookie. All rights reserved.
 //
 
-#import "UserLocationManager.h"
+#import "SILocationManager.h"
 
 #import "FlurryWithAdditions.h"
 #import "SynthesizeSingleton.h"
 
-@interface UserLocationManager ()
+@interface SILocationManager ()
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) NSMutableArray *locationDelegates;
 
 @end
 
-@implementation UserLocationManager
+@implementation SILocationManager
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(UserLocationManager);
+SYNTHESIZE_SINGLETON_FOR_CLASS(SILocationManager);
 
 - (void)initUserLocation
 {
@@ -29,7 +29,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserLocationManager);
 
 + (void)addLocationDelegate:(id <UserLocationDelegate>)delegate
 {
-    [[self sharedUserLocationManager] addLocationDelegate:delegate];
+    [[self sharedSILocationManager] addLocationDelegate:delegate];
 }
 
 - (void)addLocationDelegate:(id <UserLocationDelegate>)delegate
@@ -50,7 +50,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserLocationManager);
 
 + (void)removeLocationDelegate:(id <UserLocationDelegate>)delegate
 {
-    [[self sharedUserLocationManager] removeLocationDelegate:delegate];
+    [[self sharedSILocationManager] removeLocationDelegate:delegate];
 }
 
 - (void)removeLocationDelegate:(id <UserLocationDelegate>)delegate
