@@ -1,9 +1,26 @@
 //
-//  UserLocation.m
+// SILocationManager.m
 //
-//  Created by Alexander Kozin on 2/8/12.
-//  Copyright (c) 2012 Cookie. All rights reserved.
+// Created by Alexander Kozin (https://github.com/alkozin )
+// Copyright (c) 2013 (http://Siberian.pro )
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "SILocationManager.h"
 
@@ -34,12 +51,12 @@
     [self prepareDelegatesArray];
 }
 
-+ (void)addLocationDelegate:(id <UserLocationDelegate>)delegate
++ (void)addLocationDelegate:(id <SIUserLocationDelegate>)delegate
 {
     [[self sharedSILocationManager] addLocationDelegate:delegate];
 }
 
-- (void)addLocationDelegate:(id <UserLocationDelegate>)delegate
+- (void)addLocationDelegate:(id <SIUserLocationDelegate>)delegate
 {
     if (delegate) {
         // Start location updating if object is first in receivers list
@@ -55,12 +72,12 @@
     }
 }
 
-+ (void)removeLocationDelegate:(id <UserLocationDelegate>)delegate
++ (void)removeLocationDelegate:(id <SIUserLocationDelegate>)delegate
 {
     [[self sharedSILocationManager] removeLocationDelegate:delegate];
 }
 
-- (void)removeLocationDelegate:(id <UserLocationDelegate>)delegate
+- (void)removeLocationDelegate:(id <SIUserLocationDelegate>)delegate
 {
     if (delegate) {
         [self.locationDelegates removeObject:delegate];
@@ -94,7 +111,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-    for (id <UserLocationDelegate> delegate in self.locationDelegates)
+    for (id <SIUserLocationDelegate> delegate in self.locationDelegates)
         [self notifyDelegate:delegate];
     
     [self sendLocationToAnalyticsService];
@@ -102,13 +119,13 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    for (id <UserLocationDelegate> delegate in self.locationDelegates) {
+    for (id <SIUserLocationDelegate> delegate in self.locationDelegates) {
         if ([delegate respondsToSelector:@selector(userLocationDidFailToUpdate:)])
             [delegate userLocationDidFailToUpdate:error];
     }
 }
 
-- (void)notifyDelegate:(id <UserLocationDelegate>)delegate
+- (void)notifyDelegate:(id <SIUserLocationDelegate>)delegate
 {
     [delegate userLocationDidUpdate:self.locationManager.location];
 }
