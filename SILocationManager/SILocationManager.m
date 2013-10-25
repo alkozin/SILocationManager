@@ -7,9 +7,6 @@
 
 #import "SILocationManager.h"
 
-#import "FlurryWithAdditions.h"
-#import "SynthesizeSingleton.h"
-
 @interface SILocationManager ()
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
@@ -19,9 +16,19 @@
 
 @implementation SILocationManager
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(SILocationManager);
++ (instancetype)sharedSILocationManager
+{
+    static SILocationManager *shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] init];
+        [shared initSILocationManager];
+    });
+    
+    return shared;
+}
 
-- (void)initUserLocation
+- (void)initSILocationManager
 {
     [self configureLocationManager];
     [self prepareDelegatesArray];
@@ -90,7 +97,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SILocationManager);
     for (id <UserLocationDelegate> delegate in self.locationDelegates)
         [self notifyDelegate:delegate];
     
-    [self setFlurryLocation];
+    [self sendLocationToAnalyticsService];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -106,11 +113,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SILocationManager);
     [delegate userLocationDidUpdate:self.locationManager.location];
 }
 
-#pragma mark - Flurry deep location
+#pragma mark - Analytics location
 
-- (void)setFlurryLocation
+- (void)sendLocationToAnalyticsService
 {
-    [Flurry setLocation:self.locationManager.location];
+// Override point for customization location sending
+//    CLLocationCoordinate2D coordinate = self.locationManager.location.coordinate;
+//    [Flurry setLatitude:coordinate.latitude
+//              longitude:coordinate.longitude
+//     horizontalAccuracy:location.horizontalAccuracy
+//       verticalAccuracy:location.verticalAccuracy];
 }
 
 @end
